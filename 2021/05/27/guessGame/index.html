@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+
+<head>
+  
+  <title>猜数字游戏 - lingqu&#39;blog</title>
+  <meta charset="UTF-8">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+  
+  
+
+  <link rel="shortcut icon" href="/favicon.ico" type="image/png" />
+  <meta name="description" content="开发一个猜数字游戏。游戏应随机选择一个 100 以内的自然数, 然后邀请玩家在 10 轮以内猜出这个数字。每轮后都应告知玩家的答案正确与否，如果出错了，则告诉他数字是低了还是高了。并且应显示出玩家前一轮所猜的数字。一旦玩家猜对，或者用尽所有机会，游戏将结束。游戏结束后，可以让玩家选择再次开始。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="猜数字游戏">
+<meta property="og:url" content="https://lingqu.github.io/2021/05/27/guessGame/index.html">
+<meta property="og:site_name" content="lingqu&#39;blog">
+<meta property="og:description" content="开发一个猜数字游戏。游戏应随机选择一个 100 以内的自然数, 然后邀请玩家在 10 轮以内猜出这个数字。每轮后都应告知玩家的答案正确与否，如果出错了，则告诉他数字是低了还是高了。并且应显示出玩家前一轮所猜的数字。一旦玩家猜对，或者用尽所有机会，游戏将结束。游戏结束后，可以让玩家选择再次开始。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-05-27T14:02:42.000Z">
+<meta property="article:modified_time" content="2021-05-27T14:23:06.105Z">
+<meta property="article:author" content="lingqu">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/npm/highlight.js@9.15.8/styles/atom-one-dark.css,npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css,gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css,npm/hexo-theme-nexmoe@latest/source/lib/mdui_043tiny/css/mdui.css,npm/hexo-theme-nexmoe@latest/source/lib/iconfont/iconfont.css?v=233" crossorigin>
+  <link rel="stylesheet" href="/css/style.css?v=1622125588633">
+  
+  <link rel="stylesheet" href="/css/style.css?v=1622125588634">
+  <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1622125588634">
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body class="mdui-drawer-body-left">
+  
+  <div id="nexmoe-background">
+    <div class="nexmoe-bg" style="background-image: url(http://pic1.win4000.com/wallpaper/f/5922779a761cd.jpg)"></div>
+    <div class="mdui-appbar mdui-shadow-0">
+      <div class="mdui-toolbar">
+        <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon nexmoefont icon-menu"></i></a>
+        <div class="mdui-toolbar-spacer"></div>
+        <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+        <a href="/" title="lingqu" class="mdui-btn mdui-btn-icon"><img src="https://inews.gtimg.com/newsapp_bt/0/13492515314/1000" alt="lingqu"></a>
+       </div>
+    </div>
+  </div>
+  <div id="nexmoe-header">
+      <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="lingqu">
+            <img src="https://inews.gtimg.com/newsapp_bt/0/13492515314/1000" alt="lingqu" alt="lingqu">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>文章</span>5</div>
+        <div><span>标签</span>3</div>
+        <div><span>分类</span>0</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/about.html" title="关于博客">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                关于博客
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/PY.html" title="我的朋友">
+            <i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i>
+            <div class="mdui-list-item-content">
+                我的朋友
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+  
+  <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+        <form id="search_form" action_e="https://cn.bing.com/search?q=site:nexmoe.com" onsubmit="return search();">
+            <label><input id="search_value" name="q" type="search" placeholder="搜索"></label>
+        </form>
+    </div>
+</div>
+  
+  <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-social">
+        <a class="mdui-ripple" href="https://jq.qq.com/?_wv=1027&k=5CfKHun" target="_blank" mdui-tooltip="{content: 'QQ群'}" style="color: rgb(249, 174, 8);background-color: rgba(249, 174, 8, .1);">
+            <i class="nexmoefont icon-QQ"></i>
+        </a><a class="mdui-ripple" href="https://space.bilibili.com/51207190" target="_blank" mdui-tooltip="{content: '哔哩哔哩'}" style="color: rgb(231, 106, 141);background-color: rgba(231, 106, 141, .15);">
+            <i class="nexmoefont icon-bilibili"></i>
+        </a><a class="mdui-ripple" href="https://github.com/lingqu/" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+            <i class="nexmoefont icon-github"></i>
+        </a>
+    </div>
+</div>
+  
+  
+
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/C/" style="font-size: 20px;">C++</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 20px;">数据结构</a>
+    </div>
+    
+  </div>
+
+  
+</aside>
+    <div class="nexmoe-copyright">
+        &copy; 2021 lingqu
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://github.com/theme-nexmoe/hexo-theme-nexmoe" target="_blank">Nexmoe</a>
+        
+    </div>
+</div><!-- .nexmoe-drawer -->
+  </div>
+  <div id="nexmoe-content">
+    <div class="nexmoe-primary">
+        <div class="nexmoe-post">
+
+  <article>
+    
+        <div class="nexmoe-post-cover" style="padding-bottom: 45.83333333333333%;"> 
+            <img data-src="http://pic1.win4000.com/wallpaper/f/5922779a761cd.jpg" data-sizes="auto" alt="猜数字游戏" class="lazyload">
+            <h1>猜数字游戏</h1>
+        </div>
+    
+    
+    <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2021年05月27日</a>
+    <a><i class="nexmoefont icon-areachart"></i>1,073 字</a>
+    <a><i class="nexmoefont icon-time-circle-fill"></i>大概 5 分钟</a>
+</div>
+
+    
+
+    <p>开发一个猜数字游戏。游戏应随机选择一个 100 以内的自然数, 然后邀请玩家在 10 轮以内猜出这个数字。每轮后都应告知玩家的答案正确与否，如果出错了，则告诉他数字是低了还是高了。并且应显示出玩家前一轮所猜的数字。一旦玩家猜对，或者用尽所有机会，游戏将结束。游戏结束后，可以让玩家选择再次开始。</p>
+<span id="more"></span>
+
+<p>用到Math里的方法设置随机数，由于Math.random()在范围从<strong>0到</strong>小于<strong>1</strong>的伪随机数，可以用Math.floor()来取<strong>一个表示小于或等于指定数字的最大整数的数字</strong>，随机数与玩家猜的数比较，并给出提示。</p>
+<pre><code class="javascript">//创建一个100以内的随机数
+    let randomNumber = Math.floor(Math.random() * 100 + 1);
+</code></pre>
+<h3 id="textContent与-innerText-的区别"><a href="#textContent与-innerText-的区别" class="headerlink" title="textContent与 innerText 的区别"></a><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/API/Node/textContent#%E4%B8%8E_innertext_%E7%9A%84%E5%8C%BA%E5%88%AB">textContent与 <strong>innerText</strong> 的区别</a></h3><p>与 <code>Node.textContent</code>  名字看起来很相似，但有重要的不同之处：</p>
+<ul>
+<li><code>textContent</code> 会获取<em>所有</em>元素的内容，包括 <code>&lt;script&gt;</code>和<code>&lt;style&gt;</code>元素，然而 <code>innerText</code> 只展示给人看的元素。</li>
+<li><code>textContent</code>会返回节点中的每一个元素。相反，<code>innerText</code>受 CSS 样式的影响，并且不会返回隐藏元素的文本，</li>
+<li>此外，由于 <code>innerText</code> 受 CSS 样式的影响，它会触发回流（ <a target="_blank" rel="noopener" href="https://wiki.developer.mozilla.org/en-US/docs/Glossary/Reflow">reflow</a> ）去确保是最新的计算样式。（回流在计算上可能会非常昂贵，因此应尽可能避免。）</li>
+<li>与 <code>textContent</code> 不同的是, 在 Internet Explorer (小于和等于 11 的版本) 中对 <code>innerText</code> 进行修改， 不仅会移除当前元素的子节点，而且还会<em>永久性地破坏</em>所有后代文本节点。在之后不可能再次将节点再次插入到任何其他元素或同一元素中。</li>
+</ul>
+<p>在学着做这个游戏中学到如何用 js 动态创建元素：</p>
+<pre><code class="javascript">//创建新元素
+    resetButton = document.createElement(&#39;button&#39;);
+    resetButton.textContent = &quot;开始新游戏&quot;;
+    document.body.appendChild(resetButton);
+//删除新元素
+    resetButton.parentNode.removeChild(resetButton);
+</code></pre>
+<ol>
+<li>随机生成一个 100 以内的自然数。</li>
+<li>记录玩家当前的轮数。从 1 开始。</li>
+<li>为玩家提供一种猜测数字的方法。</li>
+<li>一旦有结果提交，先将其记录下来，以便用户可以看到他们先前的猜测。</li>
+<li>然后检查它是否正确。</li>
+<li>如果正确：<ol>
+<li>显示祝贺消息。</li>
+<li>阻止玩家继续猜测（这会使游戏混乱）。</li>
+<li>显示控件允许玩家重新开始游戏。</li>
+</ol>
+</li>
+<li>如果出错，并且玩家有剩余轮次：<ol>
+<li>告诉玩家他们错了。</li>
+<li>允许他们输入另一个猜测。</li>
+<li>轮数加 1。</li>
+</ol>
+</li>
+<li>如果出错，并且玩家没有剩余轮次：<ol>
+<li>告诉玩家游戏结束。</li>
+<li>阻止玩家继续猜测（这会使游戏混乱）。</li>
+<li>显示控件允许玩家重新开始游戏。</li>
+</ol>
+</li>
+<li>一旦游戏重启，确保游戏的逻辑和UI完全重置，然后返回步骤1。</li>
+</ol>
+<pre><code class="html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+  &lt;title&gt;Document&lt;/title&gt;
+&lt;/head&gt;
+&lt;style&gt;
+  body &#123;
+    width: 50%;
+    margin: 0 auto;
+  &#125;
+
+  .guessResult &#123;
+    color: rgb(255, 255, 255);
+  &#125;
+&lt;/style&gt;
+
+&lt;body&gt;
+  &lt;h1&gt;猜数字游戏&lt;/h1&gt;
+  &lt;p&gt;这里将会设一个1~100的数字，你有10次机会去猜出它，我会给你提示猜大还是猜小了&lt;/p&gt;
+  &lt;span&gt;请输入&lt;input type=&quot;text&quot; class=&quot;guessField&quot;&gt;
+    &lt;input type=&quot;button&quot; value=&quot;提交&quot; class=&quot;guessSubmit&quot;&gt; &lt;/span&gt;
+  &lt;div class=&quot;result&quot;&gt;
+    &lt;p class=&quot;lastGuesses&quot;&gt;&lt;/p&gt;
+    &lt;p class=&quot;guessResult&quot;&gt;&lt;/p&gt;
+    &lt;p class=&quot;hint&quot;&gt;&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;script&gt;
+  let guessField = document.querySelector(&#39;.guessField&#39;);
+  let guessSubmit = document.querySelector(&#39;.guessSubmit&#39;);
+  let lastGuesses = document.querySelector(&#39;.lastGuesses&#39;);
+  let guessResult = document.querySelector(&#39;.guessResult&#39;);
+  let hint = document.querySelector(&#39;.hint&#39;);
+  let randomNumber = Math.floor(Math.random() * 100 + 1);
+  let guessCount = 1;
+  let resetButton;
+  function checkGuess() &#123;
+    let userGuess = Number(guessField.value);
+    if (guessCount == 1) &#123;
+      lastGuesses.textContent = &quot;上次输入&quot;;
+    &#125;
+    lastGuesses.textContent += userGuess + &quot; &quot;;
+
+    if (randomNumber == userGuess) &#123;
+      guessResult.textContent = &quot;你猜对了 !&quot;;
+      guessResult.style.backgroundColor = &quot;green&quot;;
+      hint.textContent = &quot;&quot;;
+      setGameOver();
+    &#125; else if (guessCount == 10) &#123;
+      guessResult.textContent = &quot;！！！游戏结束！！！&quot;;
+      setGameOver();
+    &#125;
+    if (randomNumber &gt; userGuess) &#123;
+      guessResult.textContent = &quot;你猜错了 !&quot;;
+      guessResult.style.backgroundColor = &quot;red&quot;;
+      hint.textContent = &quot;你猜小了&quot;;
+    &#125;
+    if (randomNumber &lt; userGuess) &#123;
+      guessResult.textContent = &quot;你猜错了 !&quot;;
+      guessResult.style.backgroundColor = &quot;red&quot;;
+      hint.textContent = &quot;你猜大了&quot;;
+    &#125;
+
+    guessCount++;
+    guessField.value = &#39;&#39;;
+    guessField.focus();
+  &#125;
+  guessSubmit.addEventListener(&#39;click&#39;, checkGuess);
+  function setGameOver() &#123;
+    guessField.disabled = true;
+    guessSubmit.disabled = true;
+
+    resetButton = document.createElement(&#39;button&#39;);
+    resetButton.textContent = &quot;开始新游戏&quot;;
+    document.body.appendChild(resetButton);
+    resetButton.addEventListener(&#39;click&#39;, resetGame);
+  &#125;
+  function resetGame() &#123;
+    guessField.disabled = false;
+    guessSubmit.disabled = false;
+    randomNumber = Math.floor(Math.random() * 100 + 1);
+    guessCount = 1;
+    let p = document.querySelectorAll(&#39;.result p&#39;);
+    for (let i = 0; i &lt; p.length; i++) &#123;
+      p[i].textContent = &quot;&quot;;
+    &#125;
+    resetButton.parentNode.removeChild(resetButton);
+    guessField.focus();
+  &#125;
+&lt;/script&gt;
+
+&lt;/html&gt;
+</code></pre>
+
+  </article>
+
+  
+    
+  <div class="nexmoe-post-copyright">
+    <strong>本文作者：</strong>lingqu<br>
+    <strong>本文链接：</strong><a href="https://lingqu.github.io/2021/05/27/guessGame/" title="https:&#x2F;&#x2F;lingqu.github.io&#x2F;2021&#x2F;05&#x2F;27&#x2F;guessGame&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;lingqu.github.io&#x2F;2021&#x2F;05&#x2F;27&#x2F;guessGame&#x2F;</a><br>
+    
+      <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+    
+  </div>
+
+
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+    
+        <a class="nexmoefont icon-tag-fill -none-link" href="/tags/JavaScript/" rel="tag">JavaScript</a>
+    
+</div>
+
+  <div class="nexmoe-post-footer">
+    <section class="nexmoe-comment">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.css">
+<div id="gitalk"></div>
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.js"></script>
+<script type="text/javascript">
+    var gitalk = new Gitalk({
+        clientID: '80b2453b6d5f37ad6225',
+        clientSecret: '43e99fa852795c9a7b3eb924b2558c64b84bbdeb',
+        id: window.location.pathname,
+        repo: 'nexmoe.github.io',
+        owner: 'nexmoe',
+        admin: 'nexmoe'
+    })
+    gitalk.render('gitalk')
+</script>
+</section>
+  </div>
+</div>
+        <div class="nexmoe-post-right">
+          <div class="nexmoe-fixed">
+            <div class="nexmoe-tool"> 
+              
+                
+              
+              <a href="#nexmoe-content" class="toc-link" aria-label="回到顶部" title="top"><button class="mdui-fab mdui-ripple"><i class="nexmoefont icon-caret-top"></i></button></a>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js?v=1"></script>
+<script>
+	hljs.initHighlightingOnLoad();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/gh/xtaodada/xtaodada.github.io@0.0.2/copy.js"></script>
+ 
+
+<script src="/js/app.js?v=1622125588638"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js"></script>
+<script>
+	$(".justified-gallery").justifiedGallery({
+		rowHeight: 160,
+		margins: 10,
+	});
+</script>
+
+  
+
+
+
+
+
+</body>
+
+</html>
